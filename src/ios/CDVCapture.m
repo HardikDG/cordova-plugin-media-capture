@@ -565,6 +565,16 @@
             result = [self processVideo:moviePath forCallbackId:callbackId];
         }
     }
+    
+    for (UIView *view in [self.viewController.view subviews]) {
+        if ([view  isMemberOfClass:[UIWebView class]]) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSLog(@"Inside view: %@",view);
+                [view setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+            });
+        }
+    }
+    
     if (!result) {
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageToErrorObject:CAPTURE_INTERNAL_ERR];
     }
@@ -578,6 +588,15 @@
     NSString* callbackId = cameraPicker.callbackId;
 
     [[picker presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+    
+    for (UIView *view in [self.viewController.view subviews]) {
+        if ([view  isMemberOfClass:[UIWebView class]]) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSLog(@"Inside view: %@",view);
+                [view setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height)];
+            });
+        }
+    }
 
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageToErrorObject:CAPTURE_NO_MEDIA_FILES];
     [self.commandDelegate sendPluginResult:result callbackId:callbackId];
